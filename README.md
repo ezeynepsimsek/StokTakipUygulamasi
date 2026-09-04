@@ -1,7 +1,10 @@
 ASP.NET Core MVC Stok, Sipariş ve Müşteri Yönetimi Sistemi
+
 Bu proje, küçük ve orta ölçekli işletmelerin (KOBİ) depo, stok, finans ve müşteri ilişkileri süreçlerini merkezi bir dijital platform üzerinden yönetebilmeleri amacıyla geliştirilmiş kapsamlı bir web otomasyonudur. Modern yazılım mühendisliği prensipleri gözetilerek, test edilebilir ve kurumsal ölçekte kullanıma hazır bir mimari inşa edilmiştir.
 
--Öne Çıkan Özellikler
+
+-ÖNE ÇIKAN ÖZELLİKLER
+
 Akıllı Sipariş ve Sepet Yönetimi: Sepete ürün eklenirken anlık veritabanı stok kontrolü yapılır. Yetersiz stok durumunda işlem durdurulur. Sipariş tamamlandığında stoklar eşzamanlı olarak güncellenir.
 
 Gelişmiş Durum Takibi (Enum): Siparişler Bekliyor, Hazırlanıyor, Tamamlandı ve İptal durumlarında takip edilir. Bir sipariş "İptal" edildiğinde, içerisindeki satılan ürün adetleri otomatik olarak ana depoya iade edilir. Çift iadeyi önleyen koruma algoritmaları mevcuttur.
@@ -14,7 +17,9 @@ Güvenlik ve Performans: [Authorize] ile çerez bazlı (Cookie Authentication) y
 
 Excel'e Dışa Aktar: Veritabanındaki operasyonel kayıtlar StringBuilder ve UTF-8 BOM etiketleri kullanılarak Türkçe karakter sorunu olmadan CSV/Excel formatında raporlanabilir.
 
--Kullanılan Teknolojiler
+
+-KULLANILAN TEKNOLOJİLER
+
 Backend: C#, ASP.NET Core MVC, LINQ
 
 Veritabanı & ORM: MS SQL Server, Entity Framework Core (Code-First)
@@ -23,7 +28,9 @@ Frontend: HTML5, CSS3, Tailwind CSS (Utility-first), JavaScript
 
 Veri Görselleştirme: Chart.js
 
--Kurulum Adımları
+
+-KURULUM ADIMLARI
+
 Projeyi kendi bilgisayarınızda (lokal ortamda) çalıştırmak için aşağıdaki adımları izleyebilirsiniz:
 
 Repoyu Klonlayın:
@@ -39,5 +46,7 @@ Update-Database
 Projeyi Çalıştırın:
 Projeyi Visual Studio üzerinden başlatın (F5 veya Ctrl+F5) ve giriş ekranından sisteme erişim sağlayın.
 
--Lisans
+
+-LİSANS
+
 Bu proje, açık kaynak kodlu olarak geliştirilmiştir ve eğitim/portföy amaçlıdır.
