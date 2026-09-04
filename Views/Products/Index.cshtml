@@ -1,0 +1,112 @@
+@model IEnumerable<StokTakipUygulamasi.Models.Product>
+
+@{
+    ViewData["Title"] = "Ürünler";
+}
+
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+    
+    <!-- Arama Çubuğu -->
+    <form asp-action="Index" method="get" class="flex w-full md:w-auto">
+        <input type="text" name="searchString" value="@ViewBag.SearchString" placeholder="Ürün veya kategori ara..." class="w-full md:w-64 border border-gray-300 rounded-l-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm" />
+        <button type="submit" class="bg-slate-700 hover:bg-slate-800 text-white px-4 py-2 rounded-r-sm text-sm font-medium transition">
+            Ara
+        </button>
+        
+        @if (!string.IsNullOrEmpty(ViewBag.SearchString))
+        {
+            <a href="/Products" class="flex items-center text-slate-500 hover:text-red-500 px-3 text-sm font-medium transition">
+                Temizle
+            </a>
+        }
+    </form>
+
+    <!-- SAĞ TARAF: Butonlar -->
+    <div class="flex items-center space-x-3 w-full md:w-auto">
+        <!-- Yeni: Excel Rapor Butonu (Yeşil) -->
+        <a href="/Products/ExportToExcel" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-sm text-sm font-medium transition shadow flex items-center space-x-2 whitespace-nowrap">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <span>Excel'e Aktar</span>
+        </a>
+
+        <!-- Mevcut Ekleme Butonu -->
+        <a href="/Products/Create" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-sm text-sm font-medium transition shadow inline-block whitespace-nowrap">
+            + Yeni Ürün
+        </a>
+    </div>
+</div>
+
+<div class="bg-white rounded-sm shadow-sm border border-gray-200 overflow-hidden">
+    <table class="w-full text-left border-collapse">
+        <thead>
+            <tr class="bg-slate-50 border-b border-gray-200 text-gray-600 text-sm">
+                <th class="px-6 py-4 font-semibold">Ürün Adı</th>
+                <th class="px-6 py-4 font-semibold">Kategori</th>
+                <th class="px-6 py-4 font-semibold text-right">Fiyat</th>
+                <th class="px-6 py-4 font-semibold text-right">Stok</th>
+                <th class="px-6 py-4 font-semibold text-center">İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (!Model.Any())
+            {
+                <tr>
+                    <td colspan="5" class="px-6 py-8 text-center text-gray-500">
+                        Henüz hiç ürün eklenmemiş.
+                    </td>
+                </tr>
+            }
+            else
+            {
+                foreach (var item in Model)
+                {
+                    <tr class="border-b border-gray-100 hover:bg-emerald-50 transition">
+                        <td class="px-6 py-4 font-medium text-gray-800">@item.Name</td>
+                        <td class="px-6 py-4 text-sm text-gray-600">@(item.Category != null ? item.Category.Name : "Kategori Yok")</td>
+                        <td class="px-6 py-4 text-right font-medium text-emerald-600">@item.Price.ToString("N2") ₺</td>
+                        
+                        <!-- Stok 10'dan azsa rengi turuncu (uyarı) yapıyoruz -->
+                        <td class="px-6 py-4 text-right font-bold @(item.StockQuantity < 10 ? "text-amber-500" : "text-gray-700")">
+                            @item.StockQuantity
+                        </td>
+                        
+                        <td class="px-6 py-4 text-center space-x-2">
+                            <a href="/Products/Edit/@item.Id" class="text-emerald-600 hover:text-emerald-800 text-sm font-medium">Düzenle</a>
+                            <span class="text-gray-300">|</span>
+                            <a href="/Products/Delete/@item.Id" class="text-red-500 hover:text-red-700 text-sm font-medium">Sil</a>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Sayfalama (Pagination) -->
+@if (ViewBag.TotalPages > 1)
+{
+    <div class="flex justify-center items-center mt-6 space-x-1">
+        
+        <!-- Önceki Butonu -->
+        @if (ViewBag.CurrentPage > 1)
+        {
+            <a href="/Products?page=@(ViewBag.CurrentPage - 1)&searchString=@ViewBag.SearchString" class="px-3 py-1 border border-gray-300 rounded-sm hover:bg-gray-50 text-gray-600 text-sm font-medium transition">Önceki</a>
+        }
+
+        <!-- Sayfa Numaraları -->
+        @for (int i = 1; i <= ViewBag.TotalPages; i++)
+        {
+            <a href="/Products?page=@i&searchString=@ViewBag.SearchString" class="px-3 py-1 border rounded-sm text-sm font-medium transition @(i == ViewBag.CurrentPage ? "bg-emerald-500 text-white border-emerald-500 shadow-sm" : "border-gray-300 hover:bg-gray-50 text-gray-600")">
+                @i
+            </a>
+        }
+
+        <!-- Sonraki Butonu -->
+        @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+        {
+            <a href="/Products?page=@(ViewBag.CurrentPage + 1)&searchString=@ViewBag.SearchString" class="px-3 py-1 border border-gray-300 rounded-sm hover:bg-gray-50 text-gray-600 text-sm font-medium transition">Sonraki</a>
+        }
+    </div>
+}

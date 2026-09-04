@@ -1,0 +1,35 @@
+@model StokTakipUygulamasi.Models.Order
+
+@{
+    ViewData["Title"] = "Yeni Sipariş Başlat";
+}
+
+<div class="max-w-xl bg-white rounded-sm shadow-sm border border-gray-200 p-6">
+    <h3 class="text-lg font-semibold text-gray-800 mb-6">Siparişi Kim Veriyor?</h3>
+    
+    <!-- Kullanıcıyı yönlendiren fresh bir bilgi kutusu (Sarı/Amber) -->
+    <div class="bg-amber-50 border-l-4 border-amber-400 p-4 mb-6 rounded-r-sm">
+        <p class="text-sm text-amber-800">
+            <strong>Bilgi:</strong> Önce müşteriyi seçerek siparişi başlatıyoruz. Ürünleri (Sipariş Detaylarını) bu adımdan sonra açılacak ekranda ekleyeceğiz.
+        </p>
+    </div>
+
+    <form asp-action="Create" method="post">
+        <div class="mb-5">
+            <label asp-for="CustomerId" class="block text-sm font-medium text-gray-700 mb-1">Kayıtlı Müşteri Seçin</label>
+            <select asp-for="CustomerId" class="w-full border border-gray-300 rounded-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition bg-white" asp-items="ViewBag.CustomerId" required>
+                <option value="">-- Müşteri Listesinden Seçiniz --</option>
+            </select>
+            <span asp-validation-for="CustomerId" class="text-red-500 text-xs mt-1"></span>
+        </div>
+
+        <div class="flex items-center space-x-3 mt-8 pt-4 border-t border-gray-100">
+            <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-sm text-sm font-medium transition shadow">
+                Devam Et (Ürün Ekleme Adımına Geç)
+            </button>
+            <a href="/Orders" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-6 py-2 rounded-sm text-sm font-medium transition">
+                İptal
+            </a>
+        </div>
+    </form>
+</div>

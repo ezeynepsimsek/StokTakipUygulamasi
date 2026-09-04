@@ -1,0 +1,107 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+    // C#'tan gelen düşük stoklu ürünleri listeye çeviriyoruz
+    var lowStockProducts = ViewBag.LowStockProducts as List<StokTakipUygulamasi.Models.Product>;
+}
+
+<!-- 1. Özet Kartları -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+    <div class="bg-white p-6 rounded-sm shadow-sm border border-gray-100 border-l-4 border-l-emerald-500">
+        <p class="text-sm text-gray-500 font-medium">Toplam Satış Tutarı</p>
+        <h3 class="text-2xl font-bold text-gray-800 mt-1">@ViewBag.TotalSales.ToString("N2") ₺</h3>
+    </div>
+    <div class="bg-white p-6 rounded-sm shadow-sm border border-gray-100 border-l-4 border-l-cyan-500">
+        <p class="text-sm text-gray-500 font-medium">Toplam Sipariş</p>
+        <h3 class="text-2xl font-bold text-gray-800 mt-1">@ViewBag.TotalOrders</h3>
+    </div>
+    <div class="bg-white p-6 rounded-sm shadow-sm border border-gray-100 border-l-4 border-l-orange-500">
+        <p class="text-sm text-gray-500 font-medium">Aktif Ürün Çeşidi</p>
+        <h3 class="text-2xl font-bold text-gray-800 mt-1">@ViewBag.TotalProducts</h3>
+    </div>
+    <div class="bg-white p-6 rounded-sm shadow-sm border border-gray-100 border-l-4 border-l-slate-400">
+        <p class="text-sm text-gray-500 font-medium">Kayıtlı Müşteri</p>
+        <h3 class="text-2xl font-bold text-gray-800 mt-1">@ViewBag.TotalCustomers</h3>
+    </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    
+    <!-- 2. Düşük Stok Uyarıları Tablosu -->
+    <div class="lg:col-span-1 bg-white border border-amber-200 rounded-sm shadow-sm overflow-hidden">
+        <div class="bg-amber-50 px-4 py-3 border-b border-amber-200 flex items-center justify-between">
+            <h3 class="text-amber-800 font-semibold">⚠️ Düşük Stok Uyarısı</h3>
+            <span class="bg-amber-100 text-amber-800 text-xs font-bold px-2 py-1 rounded-sm">@lowStockProducts?.Count Ürün</span>
+        </div>
+        <div class="p-0">
+            <table class="w-full text-left border-collapse">
+                <tbody>
+                    @if (lowStockProducts != null && lowStockProducts.Any())
+                    {
+                        foreach (var item in lowStockProducts)
+                        {
+                            <tr class="border-b border-gray-100 hover:bg-gray-50 transition">
+                                <td class="px-4 py-3 text-sm text-gray-800 font-medium">@item.Name</td>
+                                <td class="px-4 py-3 text-sm font-bold @(item.StockQuantity <= 0 ? "text-red-500" : "text-amber-500") text-right">
+                                    @item.StockQuantity Adet
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="2" class="px-4 py-8 text-center text-sm text-gray-500">
+                                Stoku azalan ürün yok. Harika!
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 3. Satış Grafiği (Chart.js) -->
+    <div class="lg:col-span-2 bg-white p-6 rounded-sm shadow-sm border border-gray-100">
+        <h3 class="text-gray-800 font-semibold mb-4">Son 7 Günlük Sipariş Trendi</h3>
+        <div class="relative h-64 w-full">
+            <canvas id="salesChart"></canvas>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <!-- Chart.js Kütüphanesi -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // C#'tan gelen tarihleri ve sayıları JavaScript'in anlayacağı şekle çeviriyoruz
+        const chartLabels = @Html.Raw(Json.Serialize(ViewBag.ChartLabels));
+        const chartData = @Html.Raw(Json.Serialize(ViewBag.ChartData));
+
+        const ctx = document.getElementById('salesChart');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: chartLabels,
+                datasets: [{
+                    label: 'Sipariş Sayısı',
+                    data: chartData,
+                    backgroundColor: '#10b981', // emerald-500
+                    borderRadius: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: { 
+                        beginAtZero: true,
+                        ticks: { precision: 0 } // Buçuklu sipariş sayısı olmaz, tam sayı gösterir
+                    }
+                }
+            }
+        });
+    </script>
+}

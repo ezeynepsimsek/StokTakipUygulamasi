@@ -1,0 +1,50 @@
+@model IEnumerable<StokTakipUygulamasi.Models.Category>
+
+@{
+    ViewData["Title"] = "Kategoriler";
+}
+
+<div class="flex justify-between items-center mb-6">
+    <p class="text-gray-500 text-sm">Sistemde kayıtlı ürün kategorilerini buradan yönetebilirsiniz.</p>
+    
+    <a href="/Categories/Create" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-sm text-sm font-medium transition shadow inline-block">
+        + Yeni Kategori
+    </a>
+</div>
+
+<div class="bg-white rounded-sm shadow-sm border border-gray-200 overflow-hidden">
+    <table class="w-full text-left border-collapse">
+        <thead>
+            <tr class="bg-slate-50 border-b border-gray-200 text-gray-600 text-sm">
+                <th class="px-6 py-4 font-semibold">ID</th>
+                <th class="px-6 py-4 font-semibold">Kategori Adı</th>
+                <th class="px-6 py-4 font-semibold text-right">İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (!Model.Any())
+            {
+                <tr>
+                    <td colspan="3" class="px-6 py-8 text-center text-gray-500">
+                        Henüz hiç kategori eklenmemiş.
+                    </td>
+                </tr>
+            }
+            else
+            {
+                foreach (var item in Model)
+                {
+                    <tr class="border-b border-gray-100 hover:bg-emerald-50 transition">
+                        <td class="px-6 py-4 text-gray-500">#@item.Id</td>
+                        <td class="px-6 py-4 font-medium text-gray-800">@item.Name</td>
+                        <td class="px-6 py-4 text-right space-x-2">
+                            <a href="/Categories/Edit/@item.Id" class="text-emerald-600 hover:text-emerald-800 text-sm font-medium">Düzenle</a>
+                            <span class="text-gray-300">|</span>
+                            <a href="/Categories/Delete/@item.Id" class="text-red-500 hover:text-red-700 text-sm font-medium">Sil</a>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

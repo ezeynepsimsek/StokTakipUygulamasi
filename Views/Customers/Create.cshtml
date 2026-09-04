@@ -1,0 +1,52 @@
+@model StokTakipUygulamasi.Models.Customer
+
+@{
+    ViewData["Title"] = "Yeni Müşteri Ekle";
+}
+
+<div class="max-w-2xl bg-white rounded-sm shadow-sm border border-gray-200 p-6">
+    <h3 class="text-lg font-semibold text-gray-800 mb-6">Müşteri Bilgileri</h3>
+    
+    <form asp-action="Create" method="post">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            <!-- Adı -->
+            <div class="col-span-1">
+                <label asp-for="FirstName" class="block text-sm font-medium text-gray-700 mb-1">Adı</label>
+                <input asp-for="FirstName" class="w-full border border-gray-300 rounded-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition" placeholder="Örn: Ahmet" required />
+                <span asp-validation-for="FirstName" class="text-red-500 text-xs mt-1"></span>
+            </div>
+
+            <!-- Soyadı -->
+            <div class="col-span-1">
+                <label asp-for="LastName" class="block text-sm font-medium text-gray-700 mb-1">Soyadı</label>
+                <input asp-for="LastName" class="w-full border border-gray-300 rounded-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition" placeholder="Örn: Yılmaz" required />
+                <span asp-validation-for="LastName" class="text-red-500 text-xs mt-1"></span>
+            </div>
+
+            <!-- E-Posta -->
+            <div class="col-span-1">
+                <label asp-for="Email" class="block text-sm font-medium text-gray-700 mb-1">E-Posta Adresi</label>
+                <input asp-for="Email" type="email" class="w-full border border-gray-300 rounded-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition" placeholder="ornek@mail.com" />
+                <span asp-validation-for="Email" class="text-red-500 text-xs mt-1"></span>
+            </div>
+
+            <!-- Telefon -->
+            <div class="col-span-1">
+                <label asp-for="Phone" class="block text-sm font-medium text-gray-700 mb-1">Telefon Numarası</label>
+                <input asp-for="Phone" type="tel" class="w-full border border-gray-300 rounded-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition" placeholder="0555 555 55 55" />
+                <span asp-validation-for="Phone" class="text-red-500 text-xs mt-1"></span>
+            </div>
+            
+        </div>
+
+        <div class="flex items-center space-x-3 mt-8 pt-4 border-t border-gray-100">
+            <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-sm text-sm font-medium transition shadow">
+                Müşteriyi Kaydet
+            </button>
+            <a href="/Customers" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-6 py-2 rounded-sm text-sm font-medium transition">
+                İptal
+            </a>
+        </div>
+    </form>
+</div>

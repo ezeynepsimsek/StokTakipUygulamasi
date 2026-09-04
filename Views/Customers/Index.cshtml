@@ -1,0 +1,84 @@
+@model IEnumerable<StokTakipUygulamasi.Models.Customer>
+
+@{
+    ViewData["Title"] = "Müşteriler";
+}
+
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+    
+    <!-- Arama Çubuğu -->
+    <form asp-action="Index" method="get" class="flex w-full md:w-auto">
+        <input type="text" name="searchString" value="@ViewBag.SearchString" placeholder="İsim, e-posta veya telefon..." class="w-full md:w-64 border border-gray-300 rounded-l-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm" />
+        <button type="submit" class="bg-slate-700 hover:bg-slate-800 text-white px-4 py-2 rounded-r-sm text-sm font-medium transition">
+            Ara
+        </button>
+        
+        @if (!string.IsNullOrEmpty(ViewBag.SearchString))
+        {
+            <a href="/Customers" class="flex items-center text-slate-500 hover:text-red-500 px-3 text-sm font-medium transition">
+                Temizle
+            </a>
+        }
+    </form>
+
+    <a href="/Customers/Create" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-sm text-sm font-medium transition shadow inline-block whitespace-nowrap">
+        + Yeni Müşteri
+    </a>
+</div>
+
+<div class="bg-white rounded-sm shadow-sm border border-gray-200 overflow-hidden">
+    <table class="w-full text-left border-collapse">
+        <thead>
+            <tr class="bg-slate-50 border-b border-gray-200 text-gray-600 text-sm">
+                <th class="px-6 py-4 font-semibold">Müşteri Adı Soyadı</th>
+                <th class="px-6 py-4 font-semibold">E-Posta</th>
+                <th class="px-6 py-4 font-semibold">Telefon</th>
+                <th class="px-6 py-4 font-semibold text-right">İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (!Model.Any())
+            {
+                <tr>
+                    <td colspan="4" class="px-6 py-8 text-center text-gray-500">
+                        Henüz hiç müşteri eklenmemiş.
+                    </td>
+                </tr>
+            }
+            else
+            {
+                foreach (var item in Model)
+                {
+                    <tr class="border-b border-gray-100 hover:bg-emerald-50 transition">
+                        <!-- Ad ve Soyadı yan yana birleştirdik -->
+                        <td class="px-6 py-4 font-medium text-gray-800">@item.FirstName @item.LastName</td>
+                        <td class="px-6 py-4 text-gray-600">@item.Email</td>
+                        <td class="px-6 py-4 text-gray-600">@item.Phone</td>
+                        <td class="px-6 py-4 text-right space-x-2">
+                            <a href="/Customers/Edit/@item.Id" class="text-emerald-600 hover:text-emerald-800 text-sm font-medium">Düzenle</a>
+                            <span class="text-gray-300">|</span>
+                            <a href="/Customers/Delete/@item.Id" class="text-red-500 hover:text-red-700 text-sm font-medium">Sil</a>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+    @if (ViewBag.TotalPages > 1)
+{
+    <div class="flex justify-center items-center mt-6 space-x-1">
+        @if (ViewBag.CurrentPage > 1)
+        {
+            <a href="/Customers?page=@(ViewBag.CurrentPage - 1)&searchString=@ViewBag.SearchString" class="px-3 py-1 border border-gray-300 rounded-sm hover:bg-gray-50 text-gray-600 text-sm font-medium transition">Önceki</a>
+        }
+        @for (int i = 1; i <= ViewBag.TotalPages; i++)
+        {
+            <a href="/Customers?page=@i&searchString=@ViewBag.SearchString" class="px-3 py-1 border rounded-sm text-sm font-medium transition @(i == ViewBag.CurrentPage ? "bg-emerald-500 text-white border-emerald-500 shadow-sm" : "border-gray-300 hover:bg-gray-50 text-gray-600")">@i</a>
+        }
+        @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+        {
+            <a href="/Customers?page=@(ViewBag.CurrentPage + 1)&searchString=@ViewBag.SearchString" class="px-3 py-1 border border-gray-300 rounded-sm hover:bg-gray-50 text-gray-600 text-sm font-medium transition">Sonraki</a>
+        }
+    </div>
+}
+</div>

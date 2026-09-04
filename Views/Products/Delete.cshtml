@@ -1,0 +1,50 @@
+@model StokTakipUygulamasi.Models.Product
+
+@{
+    ViewData["Title"] = "Ürün Sil";
+}
+
+<div class="max-w-xl bg-white rounded-sm shadow-sm border border-red-200 overflow-hidden">
+    <!-- Üst Uyarı Bandı -->
+    <div class="bg-red-50 border-b border-red-100 px-6 py-4 flex items-center space-x-3">
+        <div class="bg-red-100 text-red-600 p-2 rounded-full">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+        </div>
+        <div>
+            <h3 class="text-red-800 font-bold text-lg">Bu ürünü silmek üzeresiniz!</h3>
+            <p class="text-red-600 text-sm">Bu işlem geri alınamaz.</p>
+        </div>
+    </div>
+
+    <!-- Ürün Detayları -->
+    <div class="p-6">
+        <div class="space-y-4 mb-6">
+            <div>
+                <p class="text-xs text-gray-500 uppercase font-semibold tracking-wider">Ürün Adı</p>
+                <p class="text-lg font-medium text-gray-800">@Model.Name</p>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <p class="text-xs text-gray-500 uppercase font-semibold tracking-wider">Kategori</p>
+                    <p class="text-gray-800">@(Model.Category != null ? Model.Category.Name : "-")</p>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-500 uppercase font-semibold tracking-wider">Stok & Fiyat</p>
+                    <p class="text-gray-800">@Model.StockQuantity Adet - @Model.Price.ToString("C")</p>
+                </div>
+            </div>
+        </div>
+
+        <form asp-action="Delete" method="post" class="flex items-center space-x-3 pt-4 border-t border-gray-100">
+            <input type="hidden" asp-for="Id" />
+            <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-sm text-sm font-medium transition shadow">
+                Evet, Ürünü Sil
+            </button>
+            <a href="/Products" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-6 py-2 rounded-sm text-sm font-medium transition">
+                Vazgeç
+            </a>
+        </form>
+    </div>
+</div>

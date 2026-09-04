@@ -1,0 +1,13 @@
+# Derlenmiş dosyalar
+bin/
+obj/
+
+# Visual Studio ayarları
+.vs/
+*.user
+
+# Veritabanı dosyaları 
+*.mdf
+*.ldf
+*.ndf
+*.db

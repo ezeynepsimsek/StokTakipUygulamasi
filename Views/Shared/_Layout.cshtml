@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Stok Paneli</title>
+    
+    <!-- Hızlı başlangıç için Tailwind CSS CDN'i -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans flex h-screen overflow-hidden">
+
+    <!-- Sol Menü (Sidebar) - Ferah Yeşil Tonu -->
+    <aside class="w-64 bg-emerald-700 text-white flex flex-col shadow-lg z-10">
+        <div class="h-16 flex items-center justify-center border-b border-emerald-500/50">
+            <h1 class="text-xl font-bold tracking-wide">STOK PANELİ</h1>
+        </div>
+        <nav class="flex-1 px-4 py-6 space-y-2">
+            <!-- Seçili olan menü elemanı biraz daha koyu yeşil -->
+            <a href="/" class="block px-4 py-2 bg-emerald-700 rounded-sm hover:bg-emerald-500 transition">Dashboard</a>
+            <a href="/Products" class="block px-4 py-2 rounded-sm hover:bg-emerald-500 transition">Ürünler</a>
+            <a href="/Categories" class="block px-4 py-2 rounded-sm hover:bg-emerald-500 transition">Kategoriler</a>
+            <a href="/Customers" class="block px-4 py-2 rounded-sm hover:bg-emerald-500 transition">Müşteriler</a>
+            <a href="/Orders" class="block px-4 py-2 rounded-sm hover:bg-emerald-500 transition">Siparişler</a>
+        </nav>
+    </aside>
+
+    <!-- Sağ Taraf (İçerik Alanı) -->
+    <div class="flex-1 flex flex-col">
+        
+       <!-- Üst Bar (Navbar) -->
+        <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-8 shadow-sm">
+            <!-- Sayfa Başlığı -->
+            <h2 class="text-lg font-semibold text-gray-700">@ViewData["Title"]</h2>
+            
+            <!-- Sağ Taraf: Kullanıcı Profili ve Çıkış -->
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div class="flex items-center space-x-5">
+                    <!-- Kullanıcı Bilgisi -->
+                    <div class="flex items-center space-x-2">
+                        <div class="bg-emerald-100 text-emerald-700 w-9 h-9 rounded-full flex items-center justify-center font-bold text-sm border border-emerald-200">
+                            <!-- Kullanıcı adının ilk harfini büyük olarak yazdırıyoruz -->
+                            @User.Identity.Name.Substring(0, 1).ToUpper()
+                        </div>
+                        <span class="text-sm font-medium text-gray-700">Merhaba, <span class="font-bold">@User.Identity.Name</span></span>
+                    </div>
+
+                    <!-- Dikine Ayrım Çizgisi -->
+                    <div class="h-6 w-px bg-gray-300"></div>
+
+                    <!-- Çıkış Yap Butonu -->
+                    <a href="/Account/Logout" class="text-sm text-red-500 hover:text-red-700 font-medium transition flex items-center space-x-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                        </svg>
+                        <span>Çıkış Yap</span>
+                    </a>
+                </div>
+            }
+        </header>
+
+        <!-- Sayfaların İçeriğinin Geleceği Ana Alan -->
+        <main class="flex-1 overflow-auto p-8">
+            @RenderBody()
+        </main>
+        
+    </div>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

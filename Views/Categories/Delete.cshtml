@@ -1,0 +1,37 @@
+@model StokTakipUygulamasi.Models.Category
+
+@{
+    ViewData["Title"] = "Kategori Sil";
+}
+
+<div class="max-w-xl bg-white rounded-sm shadow-sm border border-red-200 overflow-hidden">
+    <div class="bg-red-50 border-b border-red-100 px-6 py-4 flex items-center space-x-3">
+        <div class="bg-red-100 text-red-600 p-2 rounded-full">
+            <!-- Çöp Kutusu İkonu -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+            </svg>
+        </div>
+        <div>
+            <h3 class="text-red-800 font-bold text-lg">Bu kategoriyi silmek üzeresiniz!</h3>
+            <p class="text-red-600 text-sm">Eğer bu kategoriye ait ürünler varsa sistem hata verebilir.</p>
+        </div>
+    </div>
+
+    <div class="p-6">
+        <div class="mb-6">
+            <p class="text-xs text-gray-500 uppercase font-semibold tracking-wider">Silinecek Kategori Adı</p>
+            <p class="text-xl font-bold text-gray-800 mt-1">@Model.Name</p>
+        </div>
+
+        <form asp-action="Delete" method="post" class="flex items-center space-x-3 pt-4 border-t border-gray-100">
+            <input type="hidden" asp-for="Id" />
+            <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-sm text-sm font-medium transition shadow">
+                Evet, Sil
+            </button>
+            <a href="/Categories" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-6 py-2 rounded-sm text-sm font-medium transition">
+                Vazgeç
+            </a>
+        </form>
+    </div>
+</div>
